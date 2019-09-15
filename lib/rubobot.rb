@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'rubobot/cli'
 require 'rubobot/version'
 
 module RuboBot
