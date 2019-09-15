@@ -2,7 +2,7 @@
 
 describe RuboBot::ProjectDir do
   describe '#files_changed?' do
-    subject { described_class.new('/tmp', repo: repo) }
+    subject { described_class.new('/tmp', git_repo: repo) }
 
     context 'when files have been modified' do
       let(:repo) { double('RuboBot::GitRepo', files_changed?: true) }
