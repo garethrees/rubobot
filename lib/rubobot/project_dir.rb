@@ -3,12 +3,13 @@
 module RuboBot
   # The project we're working on
   class ProjectDir
-    def initialize(dir)
+    def initialize(dir, repo: repo)
       @dir = dir
+      @repo = repo || GitRepo.new(dir)
     end
 
-    def files_changed?(diff_tool: Git::Diff.new(to_s))
-      diff_tool.files_changed?
+    def files_changed?
+      repo.files_changed?
     end
 
     def to_s
@@ -18,5 +19,6 @@ module RuboBot
     private
 
     attr_reader :dir
+    attr_reader :repo
   end
 end

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 require 'rubobot/cli'
+require 'rubobot/git_repo'
 require 'rubobot/project_dir'
 require 'rubobot/version'
 
 require 'rubobot/git/commit_message'
-require 'rubobot/git/diff'
 
 require 'rubobot/rubocop/auto_correct'
 require 'rubobot/rubocop/offense'
