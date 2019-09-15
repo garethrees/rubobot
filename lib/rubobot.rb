@@ -1,4 +1,6 @@
-require "rubobot/version"
+# frozen_string_literal: true
+
+require 'rubobot/version'
 
 module Rubobot
   class Error < StandardError; end
