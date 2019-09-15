@@ -1,0 +1,6 @@
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
