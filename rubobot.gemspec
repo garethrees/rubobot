@@ -6,7 +6,7 @@ require 'rubobot/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'rubobot'
-  spec.version       = Rubobot::VERSION
+  spec.version       = RuboBot::VERSION
   spec.authors       = ['Gareth Rees']
   spec.email         = ['gareth@garethrees.co.uk']
 

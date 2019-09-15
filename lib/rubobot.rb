@@ -2,7 +2,7 @@
 
 require 'rubobot/version'
 
-module Rubobot
+module RuboBot
   class Error < StandardError; end
   # Your code goes here...
 end
