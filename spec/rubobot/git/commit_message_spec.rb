@@ -7,6 +7,22 @@ describe RuboBot::Git::CommitMessage do
   let(:command) { 'rubocop -a --only Some/Cop /tmp' }
   let(:stdout) { 'Foo Bar Baz' }
 
+  describe '#subject' do
+    it 'returns the commit message subject' do
+      expect(subject.subject).to eq('Auto-correct Some/Cop')
+    end
+  end
+
+  describe '#body' do
+    it 'returns the commit message body' do
+      expect(subject.body).to eq(<<~MSG)
+        rubocop -a --only Some/Cop /tmp
+
+        Foo Bar Baz
+      MSG
+    end
+  end
+
   describe '#to_s' do
     let(:msg) do
       <<~MSG
