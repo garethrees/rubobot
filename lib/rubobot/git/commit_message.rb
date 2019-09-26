@@ -26,15 +26,17 @@ module RuboBot
 
       protected
 
-      attr_reader :cop
-      attr_reader :command
-      attr_reader :stdout
-
       def to_h
         { cop: cop,
           command: command,
           stdout: stdout }
       end
+
+      private
+
+      attr_reader :cop
+      attr_reader :command
+      attr_reader :stdout
     end
   end
 end
