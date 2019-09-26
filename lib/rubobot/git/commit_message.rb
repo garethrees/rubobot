@@ -10,13 +10,23 @@ module RuboBot
         @stdout = stdout
       end
 
-      def to_s
-        <<~MSG
-          Auto-correct #{cop}
+      def subject
+        "Auto-correct #{cop}"
+      end
 
+      def body
+        <<~MSG
           #{command}
 
           #{stdout}
+        MSG
+      end
+
+      def to_s
+        <<~MSG.chomp
+          #{subject}
+
+          #{body}
         MSG
       end
 
