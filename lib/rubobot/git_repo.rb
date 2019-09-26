@@ -4,6 +4,7 @@ require 'git'
 require 'time'
 
 module RuboBot
+  # The git repository for a ProjectDir
   class GitRepo
     # Raised when a commit is attempted when nothing has changed
     class NothingToCommit < StandardError; end
@@ -14,7 +15,9 @@ module RuboBot
 
     def commit_all(message)
       repo.add
+
       raise NothingToCommit unless files_changed?
+
       repo.checkout(branch_name, new_branch: true)
       repo.commit(message)
     end
