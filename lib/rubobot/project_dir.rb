@@ -11,7 +11,7 @@ module RuboBot
     def run_rubobot
       loop do
         commit_message = autocorrect(next_cop)
-        commit(commit_message) && break if files_changed?
+        break if files_changed?
       end
     end
 
@@ -38,11 +38,6 @@ module RuboBot
       ac = RuboBot::RuboCop::AutoCorrect.new(dir, cop)
       ac.run
       ac.commit_message
-    end
-
-    def commit(commit_message)
-      puts "Committing #{commit_message.subject}"
-      repo.commit_all(commit_message)
     end
 
     def offenses
