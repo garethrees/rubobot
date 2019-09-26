@@ -3,26 +3,15 @@
 module RuboBot
   # The project we're working on
   class ProjectDir
-    def initialize(dir, git_repo: git_repo)
+    def initialize(dir, git_repo: GitRepo.new(dir))
       @dir = dir
-      @repo = git_repo || GitRepo.new(dir)
+      @repo = git_repo
     end
 
     def run_rubobot
-      puts "#{offenses.send(:sorted_offenses)}"
-
       loop do
-        puts 'Getting offenses'
-        cop = offenses.next.name
-
-        puts "Auto-correcting #{ cop }"
-        commit_message = autocorrect(cop)
-
-        if files_changed?
-          puts "Committing #{ cop }"
-          repo.commit_all(commit_message)
-          break
-        end
+        commit_message = autocorrect(next_cop)
+        commit(commit_message) && break if files_changed?
       end
     end
 
@@ -39,10 +28,21 @@ module RuboBot
     attr_reader :dir
     attr_reader :repo
 
+    def next_cop
+      puts 'Getting offenses'
+      offenses.next.name
+    end
+
     def autocorrect(cop)
+      puts "Auto-correcting #{cop}"
       ac = RuboBot::RuboCop::AutoCorrect.new(dir, cop)
       ac.run
       ac.commit_message
+    end
+
+    def commit(commit_message)
+      puts "Committing #{commit_message.subject}"
+      repo.commit_all(commit_message)
     end
 
     def offenses
