@@ -25,11 +25,11 @@ module RuboBot
       options = {}
       duped_args = args.dup
       option_parser.parse!(duped_args, into: options)
-      options[:paths] = duped_args
+      options[:path] = duped_args.shift
       options
     end
 
-     def option_parser
+    def option_parser
       OptionParser.new do |opts|
         opts.banner = 'Usage: rubobot [options] [paths]'
         opts.on('--commit-message', 'Print commit message')
