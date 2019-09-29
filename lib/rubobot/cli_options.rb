@@ -13,6 +13,10 @@ module RuboBot
       parse[key]
     end
 
+    def to_hash
+      parse
+    end
+
     private
 
     attr_reader :args
