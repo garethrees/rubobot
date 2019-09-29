@@ -51,4 +51,30 @@ describe RuboBot::Configuration do
       it { is_expected.to eq(false) }
     end
   end
+
+  describe '#stdout' do
+    context 'with the defaults' do
+      subject { described_class.new.stdout }
+      it { is_expected.to eq($stdout) }
+    end
+
+    context 'when given a custom value' do
+      subject { described_class.new(stdout: custom_stdout).stdout }
+      let(:custom_stdout) { double }
+      it { is_expected.to eq(custom_stdout) }
+    end
+  end
+
+  describe '#stderr' do
+    context 'with the defaults' do
+      subject { described_class.new.stderr }
+      it { is_expected.to eq($stderr) }
+    end
+
+    context 'when given a custom value' do
+      subject { described_class.new(stderr: custom_stderr).stderr }
+      let(:custom_stderr) { double }
+      it { is_expected.to eq(custom_stderr) }
+    end
+  end
 end

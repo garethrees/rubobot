@@ -5,7 +5,9 @@ module RuboBot
   class Configuration
     DEFAULTS = { verbose: false,
                  commit_message: false,
-                 version: false }.freeze
+                 version: false,
+                 stdout: $stdout,
+                 stderr: $stderr }.freeze
 
     def initialize(options = {})
       @options = options
@@ -13,6 +15,10 @@ module RuboBot
 
     %i[verbose commit_message version].each do |option|
       define_method("#{option}?") { parsed_options[option] }
+    end
+
+    %i[stdout stderr].each do |option|
+      define_method(option) { parsed_options[option] }
     end
 
     private
