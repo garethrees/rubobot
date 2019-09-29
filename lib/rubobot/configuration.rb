@@ -3,15 +3,23 @@
 module RuboBot
   # Configuration options
   class Configuration
-    def initialize(options = Hash.new(false))
+    DEFAULTS = { verbose: false,
+                 commit_message: false,
+                 version: false }
+
+    def initialize(options = {})
       @options = options
     end
 
     %i(verbose commit_message version).each do |option|
-      define_method("#{option}?") { options[option] }
+      define_method("#{option}?") { parsed_options[option] }
     end
 
     private
+
+    def parsed_options
+      @parsed_options ||= DEFAULTS.merge(options)
+    end
 
     attr_reader :options
   end
