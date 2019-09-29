@@ -7,7 +7,6 @@ module RuboBot
   class CliOptions
     def initialize(args)
       @args = args
-      @options = {}
     end
 
     def [](key)
@@ -17,11 +16,11 @@ module RuboBot
     private
 
     attr_reader :args
-    attr_reader :options
 
     def parse
+      options = {}
       duped_args = args.dup
-      option_parser.parse!(duped_args)
+      option_parser.parse!(duped_args, into: options)
       options[:paths] = duped_args
       options
     end
@@ -29,18 +28,9 @@ module RuboBot
      def option_parser
       OptionParser.new do |opts|
         opts.banner = 'Usage: rubobot [options] [paths]'
-
-        opts.on('--commit-message', 'Print commit message') do |g|
-          options[:commit_message] = true
-        end
-
-        opts.on('-v', '--version', 'Print version') do |g|
-          options[:version] = true
-        end
-
-        opts.on('--verbose', 'Print debug info') do |g|
-          options[:verbose] = true
-        end
+        opts.on('--commit-message', 'Print commit message')
+        opts.on('-v', '--version', 'Print version')
+        opts.on('--verbose', 'Print debug info')
       end
     end
   end
