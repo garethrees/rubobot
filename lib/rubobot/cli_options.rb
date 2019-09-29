@@ -39,4 +39,3 @@ module RuboBot
     end
   end
 end
-
