@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rubobot/cli'
+require 'rubobot/cli_options'
 require 'rubobot/configuration'
 require 'rubobot/git_repo'
 require 'rubobot/project_dir'
