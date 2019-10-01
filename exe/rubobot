@@ -4,4 +4,4 @@
 $LOAD_PATH.unshift("#{__dir__}/../lib")
 
 require 'rubobot'
-exit RuboBot::CLI.new.run
+exit RuboBot::CLI.run(ARGV)
