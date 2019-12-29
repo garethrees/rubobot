@@ -4,7 +4,7 @@ require 'optparse'
 
 module RuboBot
   # Parse options passed from the CLI
-  class CliOptions
+  class Options
     def initialize(args)
       @args = args
     end
@@ -23,9 +23,8 @@ module RuboBot
 
     def parse
       options = {}
-      duped_args = args.dup
-      option_parser.parse!(duped_args, into: options)
-      options[:path] = duped_args.shift
+      option_parser.parse!(args, into: options)
+      options[:paths] = args
       options
     end
 

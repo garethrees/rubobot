@@ -4,7 +4,9 @@ describe RuboBot::RuboCop::Offenses do
   describe '#next' do
     subject { described_class.new(data) }
 
-    let(:data) { { 'Some/Offense' => 400, 'Another/BadOffense' => 200 } }
+    # let(:data) { { 'Some/Offense' => 400, 'Another/BadOffense' => 200 } }
+    let(:data) { { 'Another/BadOffense' => 200, 'Some/Offense' => 400 } }
+    
 
     it 'returns the offense with the lowest count' do
       expected = RuboBot::RuboCop::Offense.new('Another/BadOffense' => 200)

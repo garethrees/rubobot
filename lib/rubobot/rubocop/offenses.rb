@@ -7,36 +7,54 @@ module RuboBot
 
     # Offenses found by a RuboCop run
     class Offenses
-      def initialize(offense_data)
-        @offense_data = offense_data
+      def initialize(paths)
+        @paths = Array(paths)
+        options = { format: 'o', formatters: [['o']] }
+        @runner = ::RuboCop::Runner.new(options, ::RuboCop::ConfigStore.new)
       end
 
       def next
-        Offense.new(next_data)
-      end
-
-      def size
-        offense_data.size
-      end
-
-      def ==(other)
-        offense_data == other.offense_data
-      end
-
-      protected
-
-      attr_reader :offense_data
-
-      private
-
-      def next_data
-        [sorted_offenses.shift].to_h
+        Offense.new([offenses.shift].to_h)
       rescue TypeError
         raise NoOffensesError
       end
 
+      def size
+        offenses.size
+      end
+
+      def ==(other)
+        to_h == other.to_h
+      end
+
+      def to_h
+        offenses.each_with_object({}) do |(cop, count), memo|
+          memo[cop.name] = count
+        end
+      end
+
+      private
+
+      attr_reader :paths
+      attr_reader :runner
+
+      def offenses
+        @offenses ||= offenses!
+      end
+
+      def offenses!
+        sorted_offenses.
+          each_with_object({}) do |(name, count), memo|
+            cop = ::RuboCop::Cop::Cop.registry.find_by_cop_name(name).new
+            memo[cop] = count
+          end
+      end
+
       def sorted_offenses
-        @sorted_offenses ||= offense_data.sort_by { |_, value| value }.to_h
+        puts 'Getting offenses'
+        runner.run(paths)
+        formatter = runner.send(:formatter_set).first
+        formatter.offense_counts.sort_by(&:last)
       end
     end
   end
