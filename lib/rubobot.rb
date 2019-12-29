@@ -13,6 +13,8 @@ require 'rubobot/rubocop/auto_correct'
 require 'rubobot/rubocop/offense'
 require 'rubobot/rubocop/offenses'
 
+require 'rubobot/rubocop/formatter/offense_count_formatter'
+
 # Automate RuboCop Auto-correct
 module RuboBot
 end
