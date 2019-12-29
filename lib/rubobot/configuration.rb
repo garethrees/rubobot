@@ -7,7 +7,8 @@ module RuboBot
                  commit_message: false,
                  version: false,
                  stdout: $stdout,
-                 stderr: $stderr }.freeze
+                 stderr: $stderr,
+                 ctime: Time.now }.freeze
 
     def initialize(options = {})
       @options = options
@@ -17,16 +18,16 @@ module RuboBot
       define_method("#{option}?") { parsed_options[option] }
     end
 
-    %i[stdout stderr].each do |option|
+    %i[stdout stderr ctime].each do |option|
       define_method(option) { parsed_options[option] }
     end
 
     private
 
+    attr_reader :options
+
     def parsed_options
       @parsed_options ||= DEFAULTS.merge(options)
     end
-
-    attr_reader :options
   end
 end

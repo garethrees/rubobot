@@ -7,21 +7,20 @@ module RuboBot
     STATUS_FAILURE = 1
 
     def self.run(argv)
-      cli_options = CliOptions.new(argv)
-      configuration = Configuration.new(cli_options)
-      project_dir = ProjectDir.new(cli_options[:path])
-      new(project_dir, configuration).run
+      options = Options.new(argv)
+      new(options[:paths], Configuration.new(options)).run
     end
 
-    def initialize(project_dir, configuration)
-      @project_dir = project_dir
+    def initialize(paths, configuration)
+      @paths = paths
       @configuration = configuration
     end
 
     def run
       return output(VERSION) if configuration.version?
 
-      project_dir.run_rubobot
+      commit_message = Bot.new(configuration).autocorrect(paths)
+      output(commit_message) if configuration.commit_message?
       STATUS_SUCCESS
     rescue RuboBot::RuboCop::NoOffensesError
       STATUS_FAILURE
@@ -35,6 +34,6 @@ module RuboBot
     end
 
     attr_reader :configuration
-    attr_reader :project_dir
+    attr_reader :paths
   end
 end
