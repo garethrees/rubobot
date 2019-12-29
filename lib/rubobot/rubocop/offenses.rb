@@ -8,8 +8,11 @@ module RuboBot
     # Offenses found by a RuboCop run
     class Offenses
       def initialize(paths)
+        formatter = 'RuboBot::RuboCop::Formatter::OffenseCountFormatter'
+        options = { format: formatter,
+                    formatters: [[formatter]] }
+
         @paths = Array(paths)
-        options = { format: 'o', formatters: [['o']] }
         @runner = ::RuboCop::Runner.new(options, ::RuboCop::ConfigStore.new)
       end
 
