@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'open3'
-
 module RuboBot
   module RuboCop
     # Run rubocop to auto-correct a cop
@@ -16,6 +14,15 @@ module RuboBot
       def initialize(cop, paths)
         @cop = cop
         @paths = paths
+
+        formatter = 'RuboBot::RuboCop::Formatter::ClangStyleFormatter'
+        options = { safe_auto_correct: true,
+                    auto_correct: true,
+                    format: formatter,
+                    formatters: [[formatter]],
+                    only: [cop.name] }
+
+        @runner = ::RuboCop::Runner.new(options, ::RuboCop::ConfigStore.new)
       end
 
       def run
@@ -23,8 +30,7 @@ module RuboBot
       end
 
       def files_changed?
-        return false unless autocorrect?
-        status.success?
+        status
       end
 
       def commit_message
@@ -36,25 +42,29 @@ module RuboBot
 
       attr_reader :cop
       attr_reader :paths
+      attr_reader :runner
 
       def autocorrect?
         cop.support_autocorrect? && cop.autocorrect_enabled?
       end
 
-      # attr_reader
-      def stdout_str
-        @stdout_str ||= run!.first
+      def status
+        @status ||= run!
       end
 
-      # attr_reader
-      def status
-        @status ||= run!.last
+      def stdout_str
+        return @stdout_str if @stdout_str
+        run!
+        @stdout_str = runner.send(:formatter_set).first.output.string
       end
 
       def run!
-        @stdout_str, @status = Open3.capture2(command)
+        return false unless autocorrect?
+        runner.run(paths)
       end
 
+      # The command we would have run if shelling out, so that we can record it
+      # in the commit message for manual reproduction.
       def command
         'rubocop --safe-auto-correct --format clang ' \
         "--only #{cop.name} #{paths.join(' ')}"
