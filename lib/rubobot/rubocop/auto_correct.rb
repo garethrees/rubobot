@@ -4,9 +4,6 @@ module RuboBot
   module RuboCop
     # Run rubocop to auto-correct a cop
     class AutoCorrect
-      # Error for issues with running rubocop
-      class RunError < StandardError; end
-
       # Error for calling methods on an AutoCorrect if the given Cop is not
       # able to Auto-Correct
       class NotAutoCorrectableError < StandardError; end
