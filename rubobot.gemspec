@@ -10,7 +10,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Gareth Rees']
   spec.email         = ['gareth@garethrees.co.uk']
 
-  spec.summary       = 'Automate RuboCop Auto-correct'
+  spec.summary       = 'Automate code cleanup, one cop at a time'
+  spec.description   = 'Runs RuboCop Auto-correct for the cop with the ' \
+                       'lowest offense count, making it easier to ' \
+                       'incrementally improve your codebase.'
+
   spec.homepage      = 'https://github.com/garethrees/rubobot'
 
   # Specify which files should be added to the gem when it is released.
@@ -18,7 +22,7 @@ Gem::Specification.new do |spec|
   # into git.
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject do |f|
-      f.match(%r{^(test|spec|features)/})
+      f.match(%r{^(spec)/})
     end
   end
 
@@ -26,11 +30,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'git', '~> 1.5'
   spec.add_runtime_dependency 'rubocop', '~> 0.63.1'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'pry'
 end
