@@ -51,7 +51,6 @@ module RuboBot
       end
 
       def sorted_offenses
-        puts 'Getting offenses'
         runner.run(paths)
         formatter = runner.send(:formatter_set).first
         formatter.offense_counts.sort_by(&:last)
